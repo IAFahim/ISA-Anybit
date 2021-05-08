@@ -1,0 +1,20 @@
+on 01
+j 1111
+
+ovnv 02-1
+addi 1001
+andi 1010
+ori 1011
+beq 0111
+sll 1100
+srl 1101
+lw 0101
+sw 0110
+
+ovvv 0321
+add 0000
+sum 0001
+and 0010
+or 0011
+nor 0100
+xor 1110

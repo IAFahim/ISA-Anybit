@@ -4,11 +4,6 @@ import java.util.*;
 import static java.lang.Math.*;
 
 public class SingleISA {
-    public static class CodeLine {
-        public String oxab[] = new String[4];
-        public StringBuilder binaryCodeLine;
-        public StringBuilder hexCodeLine;
-    }
 
     public static class Operations {
 
@@ -17,15 +12,13 @@ public class SingleISA {
             public String readInstruction;
             public String writeInstruction;
             public String binaryCode;
-            public String hexCode;
-            public int wordCount=0;
+            public int wordCount = 0;
 
             Info(String assemblyCode, String binaryCode, String readInstruction, String writeInstruction) {
                 this.readInstruction = readInstruction;
                 this.writeInstruction = writeInstruction;
                 this.assemblyCode = assemblyCode;
                 this.binaryCode = binaryCode;
-                this.hexCode = Integer.toString(Integer.parseInt(binaryCode, 2), 16).toUpperCase();
                 for (int i = 0; i < readInstruction.length(); i++) {
                     wordCount++;
                 }
@@ -34,16 +27,16 @@ public class SingleISA {
 
         public HashMap<String, Info> map;
 
-        Operations(ArrayList<ArrayList<String>> data,int bit) {
+        Operations(ArrayList<ArrayList<String>> data, int bit) {
             map = new HashMap<>();
-            String padding="0".repeat(bit);
+            String padding = "0".repeat(bit);
             for (int x = 0; x < data.size(); x++) {
                 String readInstruction = data.get(x).get(0);
                 String writeInstruction = data.get(x).get(1);
                 for (int i = 3; i < data.get(x).size(); i += 2) {
                     String code = data.get(x).get(i - 1);
-                    String binary =data.get(x).get(i);
-                    String binaryPadded= (padding+binary).substring(binary.length());
+                    String binary = data.get(x).get(i);
+                    String binaryPadded = (padding + binary).substring(binary.length());
                     Info info = new Info(code, binaryPadded, readInstruction, writeInstruction);
                     map.put(code, info);
                 }
@@ -61,12 +54,10 @@ public class SingleISA {
         public class Info {
             public String assemblyCode;
             public String binaryCode;
-            public String hexCode;
 
             Info(String assemblyCode, String binaryCode) {
                 this.assemblyCode = assemblyCode;
                 this.binaryCode = binaryCode;
-                this.hexCode=Integer.toString(Integer.parseInt(binaryCode,2),16).toUpperCase();
             }
         }
 
@@ -127,9 +118,15 @@ public class SingleISA {
             this.paddingBinary = padding;
         }
 
-        public String getPaddingBinary(){
+        public String getPaddingBinary() {
             return this.paddingBinary;
         }
+    }
+
+    public static class CodeLine {
+        public String oxab[] = new String[4];
+        public StringBuilder binaryCodeLine;
+        public StringBuilder hexCodeLine;
     }
 
     public static class ISA {
@@ -233,7 +230,6 @@ public class SingleISA {
                 }
                 if (info.readInstruction.charAt(i) == 'o') {
                     currentLine.binaryCodeLine.append(info.binaryCode);
-                    currentLine.hexCodeLine.append(info.hexCode);
                 } else if (info.readInstruction.charAt(i) == 'v') {
                     char c = info.writeInstruction.charAt(i);
                     if (c != 'x') {
@@ -247,7 +243,6 @@ public class SingleISA {
                             continue;
                         }
                         currentLine.binaryCodeLine.append(Info.binaryCode);
-                        currentLine.hexCodeLine.append(Info.hexCode);
                     } else {
 
                     }
@@ -255,16 +250,14 @@ public class SingleISA {
                     char c = info.writeInstruction.charAt(i);
                     if (c == '-') {
                         lastBufferBinary = paddedStringBinary(currentLine.oxab[3], overflow);
-                        lastBufferHex = paddedStringHex(currentLine.oxab[3], overflow);
                         continue;
                     }
                     String str = currentLine.oxab[(int) c - '0'];
                     currentLine.binaryCodeLine.append(paddedStringBinary(str, overflow));
-                    currentLine.hexCodeLine.append(paddedStringHex(str, overflow));
                 }
             }
             currentLine.binaryCodeLine.append(lastBufferBinary);
-            currentLine.hexCodeLine.append(lastBufferHex);
+            currentLine.hexCodeLine.append(hexit(currentLine.binaryCodeLine.toString()));
             System.out.println(currentLine.hexCodeLine);
         }
 
@@ -278,9 +271,14 @@ public class SingleISA {
             return binary.substring(storage.getBit());
         }
 
+        public String hexit(String bin) {
+            String hex = Integer.toString(Integer.parseInt(bin, 2), 16);
+            return ("0".repeat(storage.getBit()) + hex).substring(hex.length()).toUpperCase();
+        }
+
         private String paddedStringHex(String str, int overflow) {
             String hex = Integer.toHexString(Integer.parseInt(str));
-            String hexCap=("0".repeat(overflow)+hex).substring(hex.length()).toUpperCase();
+            String hexCap = ("0".repeat(overflow) + hex).substring(hex.length()).toUpperCase();
             return hexCap;
         }
 
@@ -341,7 +339,7 @@ public class SingleISA {
     }
 
     public static void main(String[] args) throws IOException {
-        ISA isa = new ISA(4, 7,"Opcode.txt","AssemblyCode.txt");
+        ISA isa = new ISA(4, 7, "Opcode.txt", "AssemblyCode.txt");
         isa.printBinaryToFile();
         isa.printHexToFile();
     }

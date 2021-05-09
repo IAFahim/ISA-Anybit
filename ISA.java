@@ -130,6 +130,12 @@ public class ISA {
         }
         currentLine.binaryCodeLine.append(lastBufferBinary);
         currentLine.hexCodeLine.append(hexit(currentLine.binaryCodeLine.toString()));
+        for (int i = 0; i < currentLine.oxab.length; i++) {
+            if(currentLine.oxab[i]!=null){
+                System.out.print(currentLine.oxab[i]+" ");
+            }
+        }
+        System.out.print(currentLine.binaryCodeLine+" ");
         System.out.println(currentLine.hexCodeLine);
     }
 

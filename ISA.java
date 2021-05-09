@@ -131,32 +131,36 @@ public class ISA {
         currentLine.binaryCodeLine.append(lastBufferBinary);
         currentLine.hexCodeLine.append(hexit(currentLine.binaryCodeLine.toString()));
         for (int i = 0; i < currentLine.oxab.length; i++) {
-            if(currentLine.oxab[i]!=null){
-                System.out.print(currentLine.oxab[i]+" ");
+            if (currentLine.oxab[i] != null) {
+                System.out.print(currentLine.oxab[i] + " ");
             }
         }
-        System.out.print(currentLine.binaryCodeLine+" ");
+        System.out.print(currentLine.binaryCodeLine + " ");
         System.out.println(currentLine.hexCodeLine);
     }
 
 
     private String paddedStringBinary(String str, int overflow) {
         String binary = Integer.toBinaryString(Integer.parseInt(str));
-        if (binary.length() <= overflow * storage.getBit()) {
-            String paddedBinary = (storage.getPaddingBinary().repeat(overflow) + binary).substring(binary.length());
-            return paddedBinary;
+        String overflowStr = storage.getPaddingBinary().repeat(overflow);
+        String binaryStr = new String();
+        if (binary.length() > storage.getBit()) {
+            binaryStr = binary.substring(binary.length()-storage.getBit());
+        } else {
+            binaryStr = (storage.getPaddingBinary() + binary).substring(storage.getBit());
         }
-        return binary.substring(storage.getBit());
+        String paddedBinary = (overflowStr + binaryStr).substring(binaryStr.length());
+        return paddedBinary;
     }
 
-    public String hexit(String bin){
-        String hex=Integer.toString(Integer.parseInt(bin,2),16);
-        return ("0".repeat(storage.getBit())+hex).substring(hex.length()).toUpperCase();
+    public String hexit(String bin) {
+        String hex = Integer.toString(Integer.parseInt(bin, 2), 16);
+        return ("0".repeat(storage.getBit()) + hex).substring(hex.length()).toUpperCase();
     }
 
     private String paddedStringHex(String str, int overflow) {
         String hex = Integer.toHexString(Integer.parseInt(str));
-        String hexCap=("0".repeat(overflow)+hex).substring(hex.length()).toUpperCase();
+        String hexCap = ("0".repeat(overflow) + hex).substring(hex.length()).toUpperCase();
         return hexCap;
     }
 

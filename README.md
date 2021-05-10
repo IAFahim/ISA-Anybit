@@ -1,7 +1,7 @@
 # ISA-Anybit
 All you need is bit, tempSize, Opcode.txt, AssemblyCode.txt
 
-Take a deep breath, its not complex
+Take a deep breath, its not complex.
 So remember i said you need need AssemblyCode.txt actully if yoy dont have a file it would start taking command line input but you must have a Opcode.txt
 
 look There

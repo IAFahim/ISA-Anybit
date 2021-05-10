@@ -41,7 +41,8 @@ public class ISA {
         boolean found = sc.hasNextLine();
         while (true) {
             if (!sc.hasNextLine()) break;
-            String line = sc.nextLine();
+            String line = sc.nextLine().toLowerCase();
+            System.out.print(line+"\t\t");
             if (line.length() == 0) break;
             String split[] = line.trim().split(" ");
             int at = 0;
@@ -97,8 +98,12 @@ public class ISA {
         int looping = 0;
         for (int i = 0; i < info.readInstruction.length(); i++) {
             if (looping++ > 5) {
-                System.err.println("You made spelling mistake maybe");
-                break;
+                System.out.println("You made spelling mistake maybe");
+                return;
+            }
+            if(currentLine.oxab[1].equals("$zero")){
+                System.out.println("You can't put something in zero, silly");
+                return;
             }
             if (info.readInstruction.charAt(i) == 'o') {
                 currentLine.binaryCodeLine.append(info.binaryCode);
@@ -115,8 +120,6 @@ public class ISA {
                         continue;
                     }
                     currentLine.binaryCodeLine.append(Info.binaryCode);
-                } else {
-
                 }
             } else if (info.readInstruction.charAt(i) == 'n') {
                 char c = info.writeInstruction.charAt(i);
@@ -130,11 +133,6 @@ public class ISA {
         }
         currentLine.binaryCodeLine.append(lastBufferBinary);
         currentLine.hexCodeLine.append(hexit(currentLine.binaryCodeLine.toString()));
-        for (int i = 0; i < currentLine.oxab.length; i++) {
-            if (currentLine.oxab[i] != null) {
-                System.out.print(currentLine.oxab[i] + " ");
-            }
-        }
         System.out.print(currentLine.binaryCodeLine + " ");
         System.out.println(currentLine.hexCodeLine);
     }

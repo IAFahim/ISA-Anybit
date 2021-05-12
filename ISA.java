@@ -180,6 +180,7 @@ public class ISA {
         }
     }
 
+
     public void printHexToFile() {
         String string = "HexCode.txt";
         try {
@@ -190,8 +191,26 @@ public class ISA {
             out.close();
             System.out.println("Hex File created successfully" + System.getProperty("user.dir") + "\\" + string);
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+    public void printHexToFileLogisim() {
+        String string = "Load";
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(string));
+            out.write("v2.0 raw\n");
+            for (int i = 0; i < codeLines.size(); i++) {
+                out.write(String.valueOf(codeLines.get(i).hexCodeLine + ((codeLines.size() - 1 == i) ? "" : "\n")));
+            }
+            out.close();
+            System.out.println("Logisim File created successfully" + System.getProperty("user.dir") + "\\" + string);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public void printBinaryToFile() {
         String string = "BinaryCode.txt";
@@ -203,6 +222,7 @@ public class ISA {
             out.close();
             System.out.println("Binary File created successfully " + System.getProperty("user.dir") + "\\" + string);
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
